@@ -4,7 +4,7 @@ import java.util.*;
 public class LeitorBuffer{
     public static void main(String[] args)
     {
-        String NOME_ARQUIVO = "src/Medicos.csv";
+        String NOME_ARQUIVO = "CSVs/Medicos.csv";
         String SEPARADOR = ",";
         List<List<String>> tabela = new ArrayList<>();
         try
