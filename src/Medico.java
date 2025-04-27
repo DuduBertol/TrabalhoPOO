@@ -13,6 +13,7 @@ public class Medico{
         ReadCSV();
     }
 
+    //Funcao que le o .csv dos médicos
     public static void ReadCSV(){
         String NOME_ARQUIVO = "CSVs/Medicos.csv";
         String SEPARADOR = ",";
