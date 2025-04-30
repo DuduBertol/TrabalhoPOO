@@ -1,4 +1,5 @@
-import java.util.Scanner;
+import java.io.File;
+import java.util.*;
 
 //B. Interface do Paciente permite realizar as seguintes operações de pesquisa:
 //1. Quais são todos os médicos de um paciente, isto é, médicos que o
@@ -14,16 +15,68 @@ import java.util.Scanner;
 
 public class InterfacePaciente_Tuca {
     public static void main(String[] args) {
-        Scanner cpf = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
 
         System.out.println("Digite seu CPF: ");
-        String CPF = cpf.nextLine();
+        String cpf = input.nextLine();
+        Paciente paciente = GetPacienteFromCPF(cpf);
 
-        if (CPF.length() != 11) {
-            System.out.println("CPF invalido");
-        }
-        else {
-            System.out.println("Seu CPF: " + CPF);
-        }
+        System.out.println(paciente.nome);
+        System.out.println(paciente.cpf);
     }
+
+
+    public static Paciente GetPacienteFromCPF(String cpf) {
+        List<List<String>> tabelaPacientes = ReadCSVGetTable("CSVs/Pacientes.csv");
+
+        Paciente paciente = new Paciente();
+
+        for (int i = 0; i < tabelaPacientes.size(); i++) {
+            List<String> linha = tabelaPacientes.get(i);
+
+            String actualCPF = linha.get(1);
+            if (actualCPF.equals(cpf)) {
+                paciente.init(linha.get(0), cpf, new ArrayList<Consulta>());
+            }
+        }
+
+        return paciente;
+    }
+
+        //Funcao que le o .csv dos médicos
+        public static List<List<String>> ReadCSVGetTable(String path){
+            final String NOME_ARQUIVO = path;
+            final String SEPARADOR = ",";
+
+            List<List<String>> tabela = new ArrayList<>();
+
+            try
+            {
+                File arquivo = new File(NOME_ARQUIVO);
+                Scanner scanner_arquivo = new Scanner(arquivo);
+
+                String cabecalho = scanner_arquivo.nextLine();
+                //System.out.println(cabecalho);
+
+                while (scanner_arquivo.hasNextLine())
+                {
+                    String linha = scanner_arquivo.nextLine();
+                    Scanner scanner_linha = new Scanner(linha);
+                    scanner_linha.useDelimiter(SEPARADOR);
+                    List<String> registro = new ArrayList<>();
+                    while (scanner_linha.hasNext())
+                    {
+                        String campo = scanner_linha.next();
+                        registro.add(campo);
+                    }
+                    tabela.add(registro);
+                }
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+            return tabela;
+        }
+
 }
