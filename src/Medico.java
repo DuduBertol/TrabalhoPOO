@@ -1,8 +1,23 @@
-    //1. Cada médico possui os seguintes dados:
-    //a. Nome (string)
-    //b. Código (valor inteiro): número único de identificação do médico
-    //c. Lista de pacientes
+import java.util.*;
 
+public class Medico{
+    public String nome;
+    public int id;
+    public ArrayList<Paciente> pacientes;
+
+    public void init(String nome, int id, ArrayList<Paciente> pacientes){
+        this.nome = nome;
+        this.id = id;
+        this.pacientes = pacientes;
+    }
+}
+
+//1. Cada médico possui os seguintes dados:
+//a. Nome (string)
+//b. Código (valor inteiro): número único de identificação do médico
+//c. Lista de pacientes
+
+/*
 
 import java.io.*;
 import java.util.*;
@@ -56,3 +71,6 @@ public class Medico{
         }
     }
 }
+*/
+
+
