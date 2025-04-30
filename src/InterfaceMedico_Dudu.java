@@ -23,7 +23,7 @@ public class InterfaceMedico_Dudu {
         String nome = GetNameFromID(id);
         //System.out.println(nome);
 
-        ArrayList<Paciente> pacientes = GetListPacientesFromID(id);
+        ArrayList<Paciente> pacientes = GetListaPacientesFromID(id);
 
         Medico medico = new Medico();
         medico.init(nome, id, pacientes);
@@ -50,7 +50,7 @@ public class InterfaceMedico_Dudu {
         return medico;
     }
 
-    public static ArrayList<Paciente> GetListPacientesFromID(int id){
+    public static ArrayList<Paciente> GetListaPacientesFromID(int id){
         List<List<String>> tabelaConsultas = ReadCSVGetTable("CSVs/Consultas.csv");
 
         ArrayList<Paciente> pacientes = new ArrayList<>();
@@ -61,7 +61,7 @@ public class InterfaceMedico_Dudu {
             int actualID = Integer.parseInt(linha.get(2));
             if(actualID == id) {
 
-                int cpf = Integer.parseInt(linha.get(3));
+                String cpf = linha.get(3);
                 Paciente paciente = GetPacienteFromCPF(cpf);
                 pacientes.add(paciente);
             }
@@ -70,7 +70,7 @@ public class InterfaceMedico_Dudu {
         return pacientes;
     }
 
-    public static Paciente GetPacienteFromCPF(int cpf){
+    public static Paciente GetPacienteFromCPF(String cpf){
         List<List<String>> tabelaPacientes = ReadCSVGetTable("CSVs/Pacientes.csv");
 
         Paciente paciente = new Paciente();
@@ -78,7 +78,7 @@ public class InterfaceMedico_Dudu {
         for(int i = 0; i < tabelaPacientes.size(); i++) {
             List<String> linha = tabelaPacientes.get(i);
 
-            int actualCPF = Integer.parseInt(linha.get(2));
+            String actualCPF = linha.get(1);
             if(actualCPF == cpf) {
 
                 paciente.init(linha.get(0), cpf, new ArrayList<Consulta>());
@@ -89,8 +89,7 @@ public class InterfaceMedico_Dudu {
         return paciente;
     }
 
-    /*
-    public static ArrayList<Consulta> GetConsultasFromCPF(int cpf){
+    public static ArrayList<Consulta> GetConsultasFromCPF(String cpf){
         List<List<String>> tabelaConsultas = ReadCSVGetTable("CSVs/Consultas.csv");
 
         ArrayList<Consulta> consultas = new ArrayList<>();
@@ -98,21 +97,24 @@ public class InterfaceMedico_Dudu {
         for(int i = 0; i < tabelaConsultas.size(); i++) {
             List<String> linha = tabelaConsultas.get(i);
 
-            int actualID = Integer.parseInt(linha.get(2));
-            if(actualID == id) {
+            String actualCPF = linha.get(1);
+            if(actualCPF == cpf) {
 
                 Consulta consulta = new Consulta();
 
-
+                consulta.data = Integer.parseInt(linha.get(0));
+                consulta.horario = Integer.parseInt(linha.get(1));
+                consulta.id = Integer.parseInt(linha.get(2));
+                consulta.cpf = cpf;
             }
         }
 
-        return pacientes;
+        System.out.println(consultas);
+        return consultas;
     }
-     */
 
 
-    //Funcao que le o .csv dos médicos
+    //Funcao que le o .csv
     public static List<List<String>> ReadCSVGetTable(String path){
         final String NOME_ARQUIVO = path;
         final String SEPARADOR = ",";

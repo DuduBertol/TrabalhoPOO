@@ -9,10 +9,10 @@ import java.util.*;
 
 public class Paciente{
     public String nome;
-    public int cpf;
+    public String cpf;
     public ArrayList<Consulta> consultas;
 
-    public void init(String nome, int id, ArrayList<Consulta> consultas){
+    public void init(String nome, String cpf, ArrayList<Consulta> consultas){
         this.nome = nome;
         this.cpf = cpf;
         this.consultas = consultas;
