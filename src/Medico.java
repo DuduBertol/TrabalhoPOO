@@ -10,6 +10,16 @@ public class Medico{
         this.id = id;
         this.pacientes = pacientes;
     }
+
+    /*
+    public static List<Medico> carregarMedicos() {
+        List<List<String>> rawMedicos =  InterfaceMedico_Dudu.ReadCSVGetTable("CSVs/Medicos.csv");
+        List<Medico> medicos = new ArrayList<>();
+
+
+
+    }
+     */
 }
 
 //1. Cada médico possui os seguintes dados:

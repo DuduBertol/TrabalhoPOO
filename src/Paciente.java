@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.*;
 
 public class Paciente{
-    public String nome;
+    private String nome;
     public String cpf;
     public ArrayList<Consulta> consultas;
 
@@ -17,6 +17,12 @@ public class Paciente{
         this.cpf = cpf;
         this.consultas = consultas;
     }
+
+    public String getNome(){
+        return nome;
+    }
+
+
 }
 
 /*

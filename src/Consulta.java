@@ -19,4 +19,11 @@ public class Consulta{
         this.id = id;
         this.cpf = cpf;
     }
+
+    public int getId(){
+        return id;
+    }
+    public String getCpf(){
+        return cpf;
+    }
 }

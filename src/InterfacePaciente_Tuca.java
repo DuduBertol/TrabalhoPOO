@@ -21,7 +21,8 @@ public class InterfacePaciente_Tuca {
         String cpf = input.nextLine();
         Paciente paciente = GetPacienteFromCPF(cpf);
 
-        System.out.println(paciente.nome);
+        System.out.println(paciente.getNome());
+        //to aprendendo java calma
         System.out.println(paciente.cpf);
     }
 

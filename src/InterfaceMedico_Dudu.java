@@ -16,6 +16,11 @@ public class InterfaceMedico_Dudu {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
+        ConsultasDB consultasDB = new ConsultasDB();
+        consultasDB.readCSV();
+
+        //var consultasCPF = consultasDB.getConsultaByCPF("123.456.789-01");
+
         System.out.println("Olá Médico. Digite seu ID: ");
         int id = input.nextInt();
         //System.out.println(id);
@@ -32,7 +37,7 @@ public class InterfaceMedico_Dudu {
         System.out.println("**Medico: " + medico + "\nNome: " + medico.nome + "\nid: " + medico.id + "\npacientes: " + medico.pacientes);
 
         for (Paciente paciente : medico.pacientes) {
-            System.out.println(paciente.nome);
+            System.out.println(paciente.getNome());
             System.out.println(paciente.cpf);
             System.out.println("---");
             System.out.println(paciente.consultas);
