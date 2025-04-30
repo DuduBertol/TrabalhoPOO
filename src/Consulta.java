@@ -8,13 +8,15 @@
 import java.util.*;
 
 public class Consulta{
-    public String nome;
-    public int cpf;
-    public ArrayList<Consulta> consultas;
+    public int data;
+    public int horario;
+    public int id;
+    public String cpf;
 
-    public void init(String nome, int id, ArrayList<Consulta> consultas){
-        this.nome = nome;
+    public void init(int data, int horario, int id, String cpf){
+        this.data = data;
+        this.horario = horario;
+        this.id = id;
         this.cpf = cpf;
-        this.consultas = consultas;
     }
 }
