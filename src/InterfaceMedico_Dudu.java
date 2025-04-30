@@ -31,7 +31,23 @@ public class InterfaceMedico_Dudu {
         System.out.println("Seja bem vindo(a) - " + medico.nome + " !");
         System.out.println("**Medico: " + medico + "\nNome: " + medico.nome + "\nid: " + medico.id + "\npacientes: " + medico.pacientes);
 
+        for (Paciente paciente : medico.pacientes) {
+            System.out.println(paciente.nome);
+            System.out.println(paciente.cpf);
+            System.out.println("---");
+            System.out.println(paciente.consultas);
+            for (Consulta consulta : paciente.consultas) {
+                System.out.println(consulta.data);
+                System.out.println(consulta.horario);
+                System.out.println(consulta.id);
+                System.out.println(consulta.cpf);
+                System.out.println("---");
+            }
+            System.out.println("---");
+        }
     }
+
+
 
     public static String GetNameFromID(int id){
         List<List<String>> tabelaMedicos = ReadCSVGetTable("CSVs/Medicos.csv");
@@ -79,9 +95,9 @@ public class InterfaceMedico_Dudu {
             List<String> linha = tabelaPacientes.get(i);
 
             String actualCPF = linha.get(1);
-            if(actualCPF == cpf) {
+            if(Objects.equals(actualCPF, cpf)) {
 
-                paciente.init(linha.get(0), cpf, new ArrayList<Consulta>());
+                paciente.init(linha.get(0), cpf, GetConsultasFromCPF(cpf));
 
             }
         }
@@ -97,21 +113,24 @@ public class InterfaceMedico_Dudu {
         for(int i = 0; i < tabelaConsultas.size(); i++) {
             List<String> linha = tabelaConsultas.get(i);
 
-            String actualCPF = linha.get(1);
-            if(actualCPF == cpf) {
+            String actualCPF = linha.get(3);
+            if(Objects.equals(actualCPF, cpf)) {
 
                 Consulta consulta = new Consulta();
 
-                consulta.data = Integer.parseInt(linha.get(0));
-                consulta.horario = Integer.parseInt(linha.get(1));
+                consulta.data = linha.get(0);
+                consulta.horario = linha.get(1);
                 consulta.id = Integer.parseInt(linha.get(2));
                 consulta.cpf = cpf;
+
+                consultas.add(consulta);
             }
         }
 
-        System.out.println(consultas);
         return consultas;
     }
+
+    //=========================
 
 
     //Funcao que le o .csv

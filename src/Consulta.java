@@ -8,12 +8,12 @@
 import java.util.*;
 
 public class Consulta{
-    public int data;
-    public int horario;
+    public String data;
+    public String horario;
     public int id;
     public String cpf;
 
-    public void init(int data, int horario, int id, String cpf){
+    public void init(String data, String horario, int id, String cpf){
         this.data = data;
         this.horario = horario;
         this.id = id;
