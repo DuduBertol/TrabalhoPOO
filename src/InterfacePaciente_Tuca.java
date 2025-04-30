@@ -21,10 +21,11 @@ public class InterfacePaciente_Tuca {
         String cpf = input.nextLine();
         Paciente paciente = GetPacienteFromCPF(cpf);
 
-        System.out.println(paciente);
+        System.out.println(paciente.nome);
+        System.out.println(paciente.cpf);
     }
 
-    
+
     public static Paciente GetPacienteFromCPF(String cpf) {
         List<List<String>> tabelaPacientes = ReadCSVGetTable("CSVs/Pacientes.csv");
 
@@ -35,8 +36,7 @@ public class InterfacePaciente_Tuca {
 
             String actualCPF = linha.get(1);
             if (actualCPF.equals(cpf)) {
-                paciente.init(linha.get(0), Integer.parseInt(cpf), new ArrayList<Consulta>());
-                System.out.println(paciente);
+                paciente.init(linha.get(0), cpf, new ArrayList<Consulta>());
             }
         }
 
