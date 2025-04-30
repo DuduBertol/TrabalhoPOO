@@ -8,12 +8,20 @@ import java.io.*;
 import java.util.*;
 
 public class Paciente{
-    public static void main(String[] args)
-    {
-        ReadCSV();
-    }
+    public String nome;
+    public int cpf;
+    public ArrayList<Consulta> consultas;
 
-    public static void ReadCSV(){
+    public void init(String nome, int id, ArrayList<Consulta> consultas){
+        this.nome = nome;
+        this.cpf = cpf;
+        this.consultas = consultas;
+    }
+}
+
+/*
+
+public static void ReadCSV(){
         String NOME_ARQUIVO = "CSVs/Pacientes.csv";
         String SEPARADOR = ",";
         List<List<String>> tabela = new ArrayList<>();
@@ -54,4 +62,5 @@ public class Paciente{
             System.out.println();
         }
     }
-}
+
+ */

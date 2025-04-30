@@ -8,7 +8,7 @@ public class Medico{
     public void init(String nome, int id, ArrayList<Paciente> pacientes){
         this.nome = nome;
         this.id = id;
-        this.pacientes = new ArrayList<>();
+        this.pacientes = pacientes;
     }
 }
 
