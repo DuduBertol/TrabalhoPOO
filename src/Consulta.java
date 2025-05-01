@@ -13,7 +13,7 @@ public class Consulta{
     public int id;
     public String cpf;
 
-    public void init(String data, String horario, int id, String cpf){
+    public Consulta(String data, String horario, int id, String cpf){
         this.data = data;
         this.horario = horario;
         this.id = id;

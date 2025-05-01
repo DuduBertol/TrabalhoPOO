@@ -12,7 +12,7 @@ public class Paciente{
     public String cpf;
     public ArrayList<Consulta> consultas;
 
-    public void init(String nome, String cpf, ArrayList<Consulta> consultas){
+    public Paciente(String nome, String cpf, ArrayList<Consulta> consultas){
         this.nome = nome;
         this.cpf = cpf;
         this.consultas = consultas;

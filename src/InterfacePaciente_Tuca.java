@@ -30,14 +30,14 @@ public class InterfacePaciente_Tuca {
     public static Paciente GetPacienteFromCPF(String cpf) {
         List<List<String>> tabelaPacientes = ReadCSVGetTable("CSVs/Pacientes.csv");
 
-        Paciente paciente = new Paciente();
+        Paciente paciente = null;
 
         for (int i = 0; i < tabelaPacientes.size(); i++) {
             List<String> linha = tabelaPacientes.get(i);
 
             String actualCPF = linha.get(1);
             if (actualCPF.equals(cpf)) {
-                paciente.init(linha.get(0), cpf, new ArrayList<Consulta>());
+                paciente = new Paciente(linha.get(0), cpf, new ArrayList<Consulta>());
             }
         }
 

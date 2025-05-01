@@ -5,7 +5,7 @@ public class Medico{
     public int id;
     public ArrayList<Paciente> pacientes;
 
-    public void init(String nome, int id, ArrayList<Paciente> pacientes){
+    public Medico(String nome, int id, ArrayList<Paciente> pacientes){
         this.nome = nome;
         this.id = id;
         this.pacientes = pacientes;
