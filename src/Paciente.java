@@ -22,7 +22,9 @@ public class Paciente{
         return nome;
     }
 
-
+    public String getCpf(){
+        return cpf;
+    }
 }
 
 /*

@@ -12,6 +12,11 @@ import java.io.*;
 import java.util.*;
 
 public class InterfaceMedico_Dudu {
+    enum Options{
+        VisualizarPacientes,
+        VisualizarConsultasPeriodo,
+        VisualizarPacientesSemSeConsultarPeriodo
+    }
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
@@ -29,7 +34,7 @@ public class InterfaceMedico_Dudu {
         consultasDB.readCSV();
 
 
-        System.out.println("Olá Médico. Digite seu ID: ");
+        System.out.println("Olá Médico. Digite seu ID: (10XX)");
         int id = input.nextInt();
         String nome = medicosDB.getNameFromID(id);
 
@@ -42,12 +47,40 @@ public class InterfaceMedico_Dudu {
         //Cria o Objeto do Médico dessa sessão
         Medico medico = new Medico(nome, id, pacientes);
 
-        System.out.println(medico);
-        System.out.println(medico.nome);
-        System.out.println(medico.id);
-        System.out.println(medico.pacientes);
+        System.out.printf("Seja Bem Vindo - %s! \n", medico.nome);
+
+        System.out.println("====================");
+        System.out.println("> Nome: " + medico.nome);
+        System.out.println("> ID: " + medico.id);
+        System.out.println("====================");
+
+        System.out.println("""
+                    O que você deseja fazer?
+                        [ 1 ] - Visualizar todos os seus pacientes (passados e futuros).
+                        [ 2 ] - Visualizar consultas em determinado período de tempo. 
+                        [ 3 ] - Visualizar pacientes que não se consultam há determinado tempo.""");
+
+        System.out.print("> ");
+        int choice = input.nextInt();
+        Options option = Options.values()[choice-1];
+        switch (option) {
+            case VisualizarPacientes: {
+                medicosDB.visualizarPacientes(medico);
+                break;
+            }
+            case VisualizarConsultasPeriodo: {
+                //Code 02
+                break;
+            }
+            case VisualizarPacientesSemSeConsultarPeriodo: {
+                //Code 03
+                break;
+            }
+        }
     }
 }
+
+
 
 /* ITERADOR DE LINHA-COLUNA
 for (int i = 0; i < tabela.size(); i++) {

@@ -4,6 +4,16 @@ import java.util.*;
 public class MedicosDB {
     private ArrayList<ArrayList<String>> medicosTable;
 
+    public void visualizarPacientes(Medico medico) {
+        System.out.printf("> Pacientes: (%d)\n", medico.pacientes.size());
+        for (Paciente paciente : medico.pacientes) {
+            System.out.printf("    > Nome: %s | CPF: %s\n", paciente.getNome(), paciente.getCpf());
+        }
+    }
+
+    public void visualizaConsultarPeriodo(Medico medico, int inicio, int fim) {
+
+    }
 
     public String getNameFromID(int id){
         String name = "";
