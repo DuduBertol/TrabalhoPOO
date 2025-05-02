@@ -8,8 +8,13 @@ public class DataTempo {
         System.out.println(agora);
 
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
         String agora_formatado = agora.format(formatador);
         System.out.println(agora_formatado);
+
+        String agora_formatado2 = agora.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+        System.out.println(agora_formatado2);
+
 
         System.out.println(agora.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
 

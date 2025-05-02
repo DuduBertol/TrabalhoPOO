@@ -46,6 +46,7 @@ public class Data {
         System.out.println("Comparando hoje com ontem : " + hoje.compareTo(ontem));  // 1
         System.out.println("Comparando hoje com amanhã: " + hoje.compareTo(amanha)); // -1
         System.out.println("Comparando hoje com hoje  : " + hoje.compareTo(hoje));   // 0
+        System.out.println("Comparando hoje com hoje  : " + hoje.compareTo(LocalDate.of(2025, 04, 15)));   // 1
 
         // diferença entre duas datas (cálculo de idade)
         LocalDate nasc = LocalDate.of(1966, Month.DECEMBER, 2);

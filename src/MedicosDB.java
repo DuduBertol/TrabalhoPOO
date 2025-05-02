@@ -11,10 +11,6 @@ public class MedicosDB {
         }
     }
 
-    public void visualizaConsultarPeriodo(Medico medico, int inicio, int fim) {
-
-    }
-
     public String getNameFromID(int id){
         String name = "";
 

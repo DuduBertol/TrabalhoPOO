@@ -4,7 +4,7 @@ import java.util.*;
 public class PacientesDB {
     private ArrayList<ArrayList<String>> pacientesTable;
 
-    public Paciente getPacienteFromCPF(String cpf, ArrayList<Consulta> consultas){
+    public Paciente createPacienteFromCPF(String cpf, ArrayList<Consulta> consultas){
         Paciente paciente = null;
 
         for(int i = 0; i < this.pacientesTable.size(); i++) {
@@ -18,6 +18,8 @@ public class PacientesDB {
 
         return paciente;
     }
+
+
 
     public void readCSV(){
         String SEPARADOR = ",";

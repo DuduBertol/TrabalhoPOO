@@ -8,8 +8,9 @@
 //mais que um determinado tempo (em meses)?
 
 
-import java.io.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+
 
 public class InterfaceMedico_Dudu {
     enum Options{
@@ -41,7 +42,7 @@ public class InterfaceMedico_Dudu {
         ArrayList<String> cpfsPacientes = consultasDB.getCPFsFromID(id);
         ArrayList<Paciente> pacientes = new ArrayList<>();
         for (String cpf : cpfsPacientes) {
-            pacientes.add(pacientesDB.getPacienteFromCPF(cpf, consultasDB.getConsultasByCPF(cpf)));
+            pacientes.add(pacientesDB.createPacienteFromCPF(cpf, consultasDB.getConsultasByCPF(cpf)));
         }
 
         //Cria o Objeto do Médico dessa sessão
@@ -69,7 +70,14 @@ public class InterfaceMedico_Dudu {
                 break;
             }
             case VisualizarConsultasPeriodo: {
-                //Code 02
+                ArrayList<Consulta> consultasPeriodo = consultasDB.visualizaConsultarPeriodo(medico.id);
+                System.out.println(String.format("Consultas: (%d)", consultasPeriodo.size()));
+                for (Consulta consulta: consultasPeriodo){
+                    System.out.print("Data: " + consulta.data.format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
+                    System.out.print(" | Horario: " + consulta.horario);
+                    System.out.print(" | Paciente: " + pacientesDB.createPacienteFromCPF(consulta.cpf, consultasDB.getConsultasByCPF(consulta.cpf)).getNome());
+                    System.out.println();
+                }
                 break;
             }
             case VisualizarPacientesSemSeConsultarPeriodo: {

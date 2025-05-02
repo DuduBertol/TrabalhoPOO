@@ -1,8 +1,12 @@
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ConsultasDB {
     private ArrayList<ArrayList<String>> consultasTable;
+    private final DateTimeFormatter formatoBR = DateTimeFormatter.ofPattern("dd-MM-uuuu");
+    private final Scanner input = new Scanner(System.in);
 
     public ConsultasDB() {
         this.consultasTable = new ArrayList<>();
@@ -10,6 +14,69 @@ public class ConsultasDB {
 
     public ArrayList<ArrayList<String>> getConsultasTable() {
         return this.consultasTable;
+    }
+
+    public ArrayList<Consulta> visualizaConsultarPeriodo(int id) {
+
+        //isso ta errado, tem que ser em meses e vou fakear o dia e ano
+        System.out.println("Digite o mês de início do período que você deseja visualizar: (MM)");
+        String mesInicio = input.nextLine();
+        LocalDate dataInicio = LocalDate.parse(String.format("01-%s-2025",mesInicio), this.formatoBR);
+
+        System.out.println("Digite o mês de fim do período que você deseja visualizar: (MM)");
+        String mesFinal = input.nextLine();
+        LocalDate dataFinal = LocalDate.parse(String.format("01-%s-2025",mesFinal), this.formatoBR);
+
+        ArrayList<Consulta> consultasPeriodo = new ArrayList<>();
+
+        ArrayList<Consulta> consultasMedico = getConsultasByID(id);
+        for (Consulta consulta : consultasMedico) {
+            if(consulta.data.isAfter(dataInicio) && consulta.data.isBefore(dataFinal)){
+                consultasPeriodo.add(consulta);
+            }
+        }
+
+        return consultasPeriodo;
+    }
+
+    public ArrayList<Consulta> getConsultasAsArrayList() {
+        ArrayList<Consulta> consultas = new ArrayList<>();
+        for (ArrayList<String> linha : this.consultasTable) {
+            Consulta consulta = new Consulta(LocalDate.parse(linha.get(0), this.formatoBR), linha.get(1), Integer.parseInt(linha.get(2)), linha.get(3));
+            consultas.add(consulta);
+        }
+        return consultas;
+    }
+
+    public ArrayList<LocalDate> getListOfLocalDatasFromConsultas(){
+        ArrayList<LocalDate> listDatas = new ArrayList<>();
+
+        for (List<String> linha : this.consultasTable) {
+            String dataString = linha.get(0);
+            LocalDate data = LocalDate.parse(dataString, this.formatoBR);
+            listDatas.add(data);
+        }
+
+        return listDatas;
+    }
+
+    public ArrayList<Consulta> getConsultasByID(int id){
+
+        ArrayList<Consulta> consultas = new ArrayList<>();
+
+        for (List<String> linha : this.consultasTable) {
+            int actualID = Integer.parseInt(linha.get(2));
+            if (actualID == id) {
+
+                LocalDate data = LocalDate.parse(linha.get(0), this.formatoBR);
+                String horario = linha.get(1);
+                String cpf = linha.get(3);
+
+                consultas.add(new Consulta(data, horario, id, cpf));
+            }
+        }
+
+        return consultas;
     }
 
     public ArrayList<Consulta> getConsultasByCPF(String cpf){
@@ -20,7 +87,7 @@ public class ConsultasDB {
             String actualCPF = linha.get(3);
             if (Objects.equals(actualCPF, cpf)) {
 
-                String data = linha.get(0);
+                LocalDate data = LocalDate.parse(linha.get(0), this.formatoBR);
                 String horario = linha.get(1);
                 int id = Integer.parseInt(linha.get(2));
 
