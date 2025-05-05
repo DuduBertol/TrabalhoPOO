@@ -48,11 +48,11 @@ public class InterfaceMedico_Dudu {
         //Cria o Objeto do Médico dessa sessão
         Medico medico = new Medico(nome, id, pacientes);
 
-        System.out.printf("Seja Bem Vindo - %s! \n", medico.nome);
+        System.out.printf("Seja Bem Vindo - %s! \n", medico.getNome());
 
         System.out.println("====================");
-        System.out.println("> Nome: " + medico.nome);
-        System.out.println("> ID: " + medico.id);
+        System.out.println("> Nome: " + medico.getNome());
+        System.out.println("> ID: " + medico.getId());
         System.out.println("====================");
 
         System.out.println("""
@@ -70,12 +70,12 @@ public class InterfaceMedico_Dudu {
                 break;
             }
             case VisualizarConsultasPeriodo: {
-                ArrayList<Consulta> consultasPeriodo = consultasDB.visualizaConsultarPeriodo(medico.id);
+                ArrayList<Consulta> consultasPeriodo = consultasDB.visualizaConsultarPeriodo(medico.getId());
                 System.out.println(String.format("Consultas: (%d)", consultasPeriodo.size()));
                 for (Consulta consulta: consultasPeriodo){
-                    System.out.print("Data: " + consulta.data.format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
-                    System.out.print(" | Horario: " + consulta.horario);
-                    System.out.print(" | Paciente: " + pacientesDB.createPacienteFromCPF(consulta.cpf, consultasDB.getConsultasByCPF(consulta.cpf)).getNome());
+                    System.out.print("Data: " + consulta.getData().format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
+                    System.out.print(" | Horario: " + consulta.getHorario());
+                    System.out.print(" | Paciente: " + pacientesDB.createPacienteFromCPF(consulta.getCpf(), consultasDB.getConsultasByCPF(consulta.getCpf())).getNome());
                     System.out.println();
                 }
                 break;
@@ -87,28 +87,18 @@ public class InterfaceMedico_Dudu {
                 int meses = input.nextInt();
                 int dias = meses * 30;
 
-                ArrayList<Consulta> consultasPeriodo = consultasDB.getConsultaPassadasMesesAtras(medico.id, dias);
+                ArrayList<Consulta> consultasPeriodo = consultasDB.getConsultaPassadasMesesAtras(medico.getId(), dias);
                 if (consultasPeriodo.isEmpty()){
                     System.out.println("Você não possui nenhum pacientes nesse período.");
                 } else {
                     System.out.printf("Pacientes (%d)\n", consultasPeriodo.size());
                     for (Consulta consulta: consultasPeriodo){
-                        System.out.print("  >> " + pacientesDB.createPacienteFromCPF(consulta.cpf, consultasDB.getConsultasByCPF(consulta.cpf)).getNome());
-                        System.out.print(" | " + consulta.cpf);
-                        System.out.print(" | " + consulta.data.format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
+                        System.out.print("  >> " + pacientesDB.createPacienteFromCPF(consulta.getCpf(), consultasDB.getConsultasByCPF(consulta.getCpf())).getNome());
+                        System.out.print(" | " + consulta.getCpf());
+                        System.out.print(" | " + consulta.getData().format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
                         System.out.println();
                     }
                 }
-
-                //no consultas DB
-                //pegar todas as consultas do médico
-                //checar o dia delas
-                //comparar com o dia atual
-                    //se der mais de 30 dias de diferenca
-                    //devolve as consulta
-
-                //aqui no code
-                    //pega a ArrayList de consulta - pega o nome do paciente pelo cpf
                 break;
             }
         }

@@ -23,7 +23,7 @@ public class ConsultasDB {
         LocalDate hoje = LocalDate.now();
 
         for (Consulta consulta : consultasMedico) {
-            if(hoje.getDayOfYear() - consulta.data.getDayOfYear() >= dias) {
+            if(hoje.getDayOfYear() - consulta.getData().getDayOfYear() >= dias) {
                 consultasPassadas.add(consulta);
             }
         }
@@ -46,7 +46,7 @@ public class ConsultasDB {
 
         ArrayList<Consulta> consultasMedico = getConsultasByID(id);
         for (Consulta consulta : consultasMedico) {
-            if(consulta.data.isAfter(dataInicio) && consulta.data.isBefore(dataFinal)){
+            if(consulta.getData().isAfter(dataInicio) && consulta.getData().isBefore(dataFinal)){
                 consultasPeriodo.add(consulta);
             }
         }

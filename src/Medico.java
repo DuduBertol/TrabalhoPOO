@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class Medico{
-    public String nome;
-    public int id;
+    private String nome;
+    private int id;
     public ArrayList<Paciente> pacientes;
 
     public Medico(String nome, int id, ArrayList<Paciente> pacientes){
@@ -11,15 +11,14 @@ public class Medico{
         this.pacientes = pacientes;
     }
 
-    /*
-    public static List<Medico> carregarMedicos() {
-        List<List<String>> rawMedicos =  InterfaceMedico_Dudu.ReadCSVGetTable("CSVs/Medicos.csv");
-        List<Medico> medicos = new ArrayList<>();
-
-
-
+    public String getNome(){
+        return nome;
     }
-     */
+
+    public int getId(){
+        return id;
+    }
+
 }
 
 //1. Cada médico possui os seguintes dados:

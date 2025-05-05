@@ -9,16 +9,24 @@
     import java.util.*;
 
 public class Consulta{
-    public LocalDate data;
-    public String horario;
-    public int id;
-    public String cpf;
+    private LocalDate data;
+    private String horario;
+    private int id;
+    private String cpf;
 
     public Consulta(LocalDate data, String horario, int id, String cpf){
         this.data = data;
         this.horario = horario;
         this.id = id;
         this.cpf = cpf;
+    }
+
+    public LocalDate getData(){
+        return data;
+    }
+
+    public String getHorario(){
+        return horario;
     }
 
     public int getId(){

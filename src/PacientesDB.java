@@ -19,6 +19,21 @@ public class PacientesDB {
         return paciente;
     }
 
+    public String getNameFromCpf(String cpf){
+        String nome = null;
+
+        for(int i = 0; i < this.pacientesTable.size(); i++) {
+            List<String> linha = this.pacientesTable.get(i);
+
+            String actualCPF = linha.get(1);
+            if(Objects.equals(actualCPF, cpf)) {
+                nome = linha.get(0);
+            }
+        }
+
+        return nome;
+    }
+
 
 
     public void readCSV(){

@@ -9,8 +9,8 @@ import java.util.*;
 
 public class Paciente{
     private String nome;
-    public String cpf;
-    public ArrayList<Consulta> consultas;
+    private String cpf;
+    private ArrayList<Consulta> consultas;
 
     public Paciente(String nome, String cpf, ArrayList<Consulta> consultas){
         this.nome = nome;
@@ -24,6 +24,10 @@ public class Paciente{
 
     public String getCpf(){
         return cpf;
+    }
+
+    public ArrayList<Consulta> getConsultas(){
+        return consultas;
     }
 }
 
