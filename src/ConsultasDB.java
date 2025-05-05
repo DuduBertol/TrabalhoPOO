@@ -16,6 +16,21 @@ public class ConsultasDB {
         return this.consultasTable;
     }
 
+    public ArrayList<Consulta> getConsultaPassadasMesesAtras(int id, int dias) {
+        ArrayList<Consulta> consultasPassadas = new ArrayList<>();
+
+        ArrayList<Consulta> consultasMedico = getConsultasByID(id);
+        LocalDate hoje = LocalDate.now();
+
+        for (Consulta consulta : consultasMedico) {
+            if(hoje.getDayOfYear() - consulta.data.getDayOfYear() >= dias) {
+                consultasPassadas.add(consulta);
+            }
+        }
+
+        return consultasPassadas;
+    }
+
     public ArrayList<Consulta> visualizaConsultarPeriodo(int id) {
 
         //isso ta errado, tem que ser em meses e vou fakear o dia e ano

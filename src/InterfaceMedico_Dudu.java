@@ -82,6 +82,33 @@ public class InterfaceMedico_Dudu {
             }
             case VisualizarPacientesSemSeConsultarPeriodo: {
                 //Code 03
+
+                System.out.println("Tempo de checagem: A quantos meses seus pacientes nao se consultam?");
+                int meses = input.nextInt();
+                int dias = meses * 30;
+
+                ArrayList<Consulta> consultasPeriodo = consultasDB.getConsultaPassadasMesesAtras(medico.id, dias);
+                if (consultasPeriodo.isEmpty()){
+                    System.out.println("Você não possui nenhum pacientes nesse período.");
+                } else {
+                    System.out.printf("Pacientes (%d)\n", consultasPeriodo.size());
+                    for (Consulta consulta: consultasPeriodo){
+                        System.out.print("  >> " + pacientesDB.createPacienteFromCPF(consulta.cpf, consultasDB.getConsultasByCPF(consulta.cpf)).getNome());
+                        System.out.print(" | " + consulta.cpf);
+                        System.out.print(" | " + consulta.data.format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
+                        System.out.println();
+                    }
+                }
+
+                //no consultas DB
+                //pegar todas as consultas do médico
+                //checar o dia delas
+                //comparar com o dia atual
+                    //se der mais de 30 dias de diferenca
+                    //devolve as consulta
+
+                //aqui no code
+                    //pega a ArrayList de consulta - pega o nome do paciente pelo cpf
                 break;
             }
         }
