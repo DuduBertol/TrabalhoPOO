@@ -31,9 +31,7 @@ public class ConsultasDB {
         return consultasPassadas;
     }
 
-    public ArrayList<Consulta> visualizaConsultarPeriodo(int id) {
-
-        //isso ta errado, tem que ser em meses e vou fakear o dia e ano
+    public ArrayList<Consulta> visualizaConsultasPeriodo(int id) {
         System.out.println("Digite o mês de início do período que você deseja visualizar: (MM)");
         String mesInicio = input.nextLine();
         LocalDate dataInicio = LocalDate.parse(String.format("01-%s-2025",mesInicio), this.formatoBR);
@@ -52,6 +50,32 @@ public class ConsultasDB {
         }
 
         return consultasPeriodo;
+    }
+
+    public ArrayList<Consulta> getConsultasFuturas(ArrayList<Consulta> consultasDoPaciente) {
+        ArrayList<Consulta> consultasFuturas = new ArrayList<>();
+
+        for (Consulta consulta : consultasDoPaciente) {
+            if (consulta.getData().isAfter(LocalDate.now())) {
+                consultasFuturas.add(consulta);
+            }
+        }
+        return consultasFuturas;
+    }
+
+    public ArrayList<Consulta> getConsultasPassadasMedicoDeterminado(String cpf, int id) {
+        ArrayList<Consulta> consultasPassadas = new ArrayList<>();
+
+        LocalDate dataHoje = LocalDate.now();
+
+        ArrayList<Consulta> consultasPaciente = getConsultasByCPF(cpf);
+        for (Consulta consulta : consultasPaciente) {
+            if(consulta.getData().isBefore(dataHoje) && consulta.getId() == id){
+                consultasPassadas.add(consulta);
+            }
+        }
+
+        return consultasPassadas;
     }
 
     public ArrayList<Consulta> getConsultasAsArrayList() {
@@ -75,6 +99,25 @@ public class ConsultasDB {
         return listDatas;
     }
 
+    public ArrayList<Consulta> getConsultasByIDAndCpf(int id, String cpf){
+
+        ArrayList<Consulta> consultas = new ArrayList<>();
+
+        for (List<String> linha : this.consultasTable) {
+            int actualID = Integer.parseInt(linha.get(2));
+            String actualCPF = linha.get(3);
+            if (actualID == id && Objects.equals(actualCPF, cpf)) {
+
+                LocalDate data = LocalDate.parse(linha.get(0), this.formatoBR);
+                String horario = linha.get(1);
+
+                consultas.add(new Consulta(data, horario, id, cpf));
+            }
+        }
+
+        return consultas;
+    }
+
     public ArrayList<Consulta> getConsultasByID(int id){
 
         ArrayList<Consulta> consultas = new ArrayList<>();
@@ -93,6 +136,21 @@ public class ConsultasDB {
 
         return consultas;
     }
+
+//    public int getIDByCpf(String cpf){
+//        int id = 0;
+//
+//        for(int i = 0; i < this.consultasTable.size(); i++) {
+//            List<String> linha = this.consultasTable.get(i);
+//
+//            String actualCpf = (linha.get(2));
+//            if(actualCpf == cpf) {
+//                id.add(linha.get(3));
+//            }
+//        }
+//
+//        return id;
+//    }
 
     public ArrayList<Consulta> getConsultasByCPF(String cpf){
 

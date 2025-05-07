@@ -20,20 +20,6 @@ public class InterfacePaciente_Rafa {
 
         ConsultasDB consultasDB = new ConsultasDB();
         consultasDB.readCSV();
-// public ArrayList<String> getIDFromCpfs(String cpf){
-//        ArrayList<String> id = new ArrayList<>();
-//
-//        for(int i = 0; i < this.consultasTable.size(); i++) {
-//            List<String> linha = this.consultasTable.get(i);
-//
-//            String actualCpf = (linha.get(2));
-//            if(actualCpf == cpf) {
-//                id.add(linha.get(3));
-//            }
-//        }
-//
-//        return id;
-//    }
 
 
         //  Um Sonho(Pegar Id de medico pelo Cpf)

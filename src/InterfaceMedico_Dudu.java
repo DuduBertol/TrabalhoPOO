@@ -70,7 +70,7 @@ public class InterfaceMedico_Dudu {
                 break;
             }
             case VisualizarConsultasPeriodo: {
-                ArrayList<Consulta> consultasPeriodo = consultasDB.visualizaConsultarPeriodo(medico.getId());
+                ArrayList<Consulta> consultasPeriodo = consultasDB.visualizaConsultasPeriodo(medico.getId());
                 System.out.println(String.format("Consultas: (%d)", consultasPeriodo.size()));
                 for (Consulta consulta: consultasPeriodo){
                     System.out.print("Data: " + consulta.getData().format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
