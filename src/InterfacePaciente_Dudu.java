@@ -23,8 +23,15 @@ public class InterfacePaciente_Dudu {
         ConsultasDB consultasDB = new ConsultasDB();
         consultasDB.readCSV();
 
-        System.out.println("Olá Paciente. Digite seu CPF: (XXX.XXX.XXX-XX)");
-        String cpf = input.nextLine();
+        System.out.println("Olá Paciente.");
+        String cpf;
+
+        //Validator
+        do {
+            System.out.println("Digite seu CPF: (XXX.XXX.XXX-XX)");
+            cpf = input.nextLine().strip();
+        } while (!consultasDB.isCpfValid(cpf));
+
         String nome = pacientesDB.getNameFromCpf(cpf);
         ArrayList<Consulta> consultas = consultasDB.getConsultasByCPF(cpf);
 
@@ -39,15 +46,15 @@ public class InterfacePaciente_Dudu {
         System.out.println("====================");
 
         System.out.println("""
-                    O que você deseja fazer?
-                        [ 1 ] - Visualizar todos os seus médicos (passados e futuros).
-                        [ 2 ] - Visualizar consultas passadas com determinado médico. 
-                        [ 3 ] - Visualizar consultas futuras.""");
+                O que você deseja fazer?
+                    [ 1 ] - Visualizar todos os seus médicos (passados e futuros).
+                    [ 2 ] - Visualizar consultas passadas com determinado médico. 
+                    [ 3 ] - Visualizar consultas futuras.""");
 
         System.out.print("> ");
         int choice = input.nextInt();
 
-        InterfacePaciente_Dudu.Options option = InterfacePaciente_Dudu.Options.values()[choice-1];
+        InterfacePaciente_Dudu.Options option = InterfacePaciente_Dudu.Options.values()[choice - 1];
         switch (option) {
             case VisualizarMedicos: {
                 Set<Integer> medicosIDs = new HashSet<>();
@@ -62,7 +69,7 @@ public class InterfacePaciente_Dudu {
                     System.out.print(" | ID: " + medicoID + "\n");
 
                     for (Consulta consulta : consultas) {
-                        if(consulta.getId() == medicoID) {
+                        if (consulta.getId() == medicoID) {
                             System.out.printf("    >> Data: %s | Horário: %s \n", consulta.getData().toString(), consulta.getHorario());
                         }
                     }
@@ -78,7 +85,7 @@ public class InterfacePaciente_Dudu {
 
                 System.out.println();
                 System.out.println(String.format("Consultas: (%d)", consultasPassadas.size()));
-                for (Consulta consulta: consultasPassadas){
+                for (Consulta consulta : consultasPassadas) {
                     System.out.print("Médico: " + medicosDB.getNameFromID(id));
                     System.out.print(" | Data: " + consulta.getData().format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
                     System.out.print(" | Horario: " + consulta.getHorario());
@@ -90,7 +97,7 @@ public class InterfacePaciente_Dudu {
                 ArrayList<Consulta> consultasFuturas = consultasDB.getConsultasFuturas(consultas);
 
                 System.out.println(String.format("Consultas: (%d)", consultasFuturas.size()));
-                for (Consulta consulta: consultasFuturas){
+                for (Consulta consulta : consultasFuturas) {
                     System.out.print("  >> Médico: " + medicosDB.getNameFromID(consulta.getId()));
                     System.out.print(" | Data: " + consulta.getData().format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
                     System.out.print(" | Horario: " + consulta.getHorario());

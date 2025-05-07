@@ -34,11 +34,16 @@ public class InterfaceMedico_Dudu {
         ConsultasDB consultasDB = new ConsultasDB();
         consultasDB.readCSV();
 
+        System.out.println("Olá Médico.");
+        int id;
 
-        System.out.println("Olá Médico. Digite seu ID: (10XX)");
-        int id = input.nextInt();
+        //Validator
+        do {
+            System.out.println("Digite seu ID: (10XX)");
+            id = input.nextInt();
+        } while (!consultasDB.isIDValid(id));
+
         String nome = medicosDB.getNameFromID(id);
-
         ArrayList<String> cpfsPacientes = consultasDB.getCPFsFromID(id);
         ArrayList<Paciente> pacientes = new ArrayList<>();
         for (String cpf : cpfsPacientes) {
@@ -55,18 +60,41 @@ public class InterfaceMedico_Dudu {
         System.out.println("> ID: " + medico.getId());
         System.out.println("====================");
 
-        System.out.println("""
+        int choice = 0;
+        do {
+            System.out.println("""
                     O que você deseja fazer?
                         [ 1 ] - Visualizar todos os seus pacientes (passados e futuros).
                         [ 2 ] - Visualizar consultas em determinado período de tempo. 
                         [ 3 ] - Visualizar pacientes que não se consultam há determinado tempo.""");
 
-        System.out.print("> ");
-        int choice = input.nextInt();
+            System.out.print("> ");
+            choice = input.nextInt();
+        } while (choice < 1 || choice > 3);
+
         Options option = Options.values()[choice-1];
         switch (option) {
             case VisualizarPacientes: {
                 medicosDB.visualizarPacientes(medico);
+
+                Set<String> cpfs = new HashSet<>();
+                for (Paciente paciente : pacientes) {
+                    cpfs.add(paciente.getCpf());
+                }
+
+                System.out.printf("\nPacientes (%d) \n", cpfs.size());
+
+                for (String cpf : cpfs) {
+                    System.out.print("  > Paciente: " + pacientesDB.getNameFromCpf(cpf));
+                    System.out.print(" | CPF: " + cpf + "\n");
+
+                    for (Consulta consulta : consultasDB.getConsultasByID(id)) {
+                        if (Objects.equals(consulta.getCpf(), cpf)) {
+                            System.out.printf("    >> Data: %s | Horário: %s \n", consulta.getData().toString(), consulta.getHorario());
+                        }
+                    }
+                    System.out.println();
+                }
                 break;
             }
             case VisualizarConsultasPeriodo: {
@@ -93,7 +121,7 @@ public class InterfaceMedico_Dudu {
                 } else {
                     System.out.printf("Pacientes (%d)\n", consultasPeriodo.size());
                     for (Consulta consulta: consultasPeriodo){
-                        System.out.print("  >> " + pacientesDB.createPacienteFromCPF(consulta.getCpf(), consultasDB.getConsultasByCPF(consulta.getCpf())).getNome());
+                        System.out.print("  > " + pacientesDB.createPacienteFromCPF(consulta.getCpf(), consultasDB.getConsultasByCPF(consulta.getCpf())).getNome());
                         System.out.print(" | " + consulta.getCpf());
                         System.out.print(" | " + consulta.getData().format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
                         System.out.println();
@@ -102,6 +130,7 @@ public class InterfaceMedico_Dudu {
                 break;
             }
         }
+
     }
 }
 

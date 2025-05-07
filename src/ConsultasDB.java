@@ -186,6 +186,24 @@ public class ConsultasDB {
         return cpfs;
     }
 
+    public boolean isCpfValid(String cpf){
+        for (List<String> linha : this.consultasTable) {
+            String actualCpf = linha.get(3);
+            if (Objects.equals(actualCpf, cpf)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isIDValid(int id){
+        for (List<String> linha : this.consultasTable) {
+            int actualID = Integer.parseInt(linha.get(2));
+            if (actualID == id) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void readCSV(){
         String SEPARADOR = ",";
