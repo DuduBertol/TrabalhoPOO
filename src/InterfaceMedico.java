@@ -66,7 +66,6 @@ public class InterfaceMedico {
         Options option = Options.values()[choice-1];
         switch (option) {
             case VisualizarPacientes: {
-                medicosDB.visualizarPacientes(medico);
 
                 Set<String> cpfs = new HashSet<>();
                 for (Paciente paciente : pacientes) {
