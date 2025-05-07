@@ -1,7 +1,7 @@
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class InterfacePaciente_Dudu {
+public class InterfacePaciente {
     enum Options{
         VisualizarMedicos,
         VisualizarConsultasPassadasMedicoDeterminado,
