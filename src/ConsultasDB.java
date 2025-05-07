@@ -137,20 +137,20 @@ public class ConsultasDB {
         return consultas;
     }
 
-//    public int getIDByCpf(String cpf){
-//        int id = 0;
-//
-//        for(int i = 0; i < this.consultasTable.size(); i++) {
-//            List<String> linha = this.consultasTable.get(i);
-//
-//            String actualCpf = (linha.get(2));
-//            if(actualCpf == cpf) {
-//                id.add(linha.get(3));
-//            }
-//        }
-//
-//        return id;
-//    }
+    public ArrayList<Integer> getIDsByCpf(String cpf){
+
+        ArrayList<Integer> ids = new ArrayList<>();
+
+        for (List<String> linha : this.consultasTable) {
+
+            String actualCpf = (linha.get(3));
+            if (Objects.equals(actualCpf, cpf)) {
+                ids.add(Integer.parseInt(linha.get(2)));
+            }
+        }
+
+        return ids;
+    }
 
     public ArrayList<Consulta> getConsultasByCPF(String cpf){
 
