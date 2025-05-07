@@ -195,6 +195,7 @@ public class ConsultasDB {
         }
         return false;
     }
+
     public boolean isIDValid(int id){
         for (List<String> linha : this.consultasTable) {
             int actualID = Integer.parseInt(linha.get(2));

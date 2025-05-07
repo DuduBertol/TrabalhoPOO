@@ -1,13 +1,3 @@
-//A. Interface do Médico permite realizar as seguintes operações de pesquisa:
-//1. Quais são todos os pacientes de um determinado médico?
-//2. Quais são todas as consultas agendadas para um determinado médico
-//em determinado período (definido por uma data inicial e uma data final),
-//na ordem crescente dos horários? (O período pode cobrir tanto o passado
-//como o futuro.)
-//3. Quais são os pacientes de um determinado médico que não o consulta há
-//mais que um determinado tempo (em meses)?
-
-
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -70,6 +60,7 @@ public class InterfaceMedico_Dudu {
 
             System.out.print("> ");
             choice = input.nextInt();
+
         } while (choice < 1 || choice > 3);
 
         Options option = Options.values()[choice-1];
@@ -99,6 +90,13 @@ public class InterfaceMedico_Dudu {
             }
             case VisualizarConsultasPeriodo: {
                 ArrayList<Consulta> consultasPeriodo = consultasDB.visualizaConsultasPeriodo(medico.getId());
+
+                //Validator
+                if(consultasPeriodo.isEmpty()){
+                    System.out.println("Nenhuma consulta encontrada!");
+                    break;
+                }
+
                 System.out.println(String.format("Consultas: (%d)", consultasPeriodo.size()));
                 for (Consulta consulta: consultasPeriodo){
                     System.out.print("Data: " + consulta.getData().format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
@@ -109,23 +107,24 @@ public class InterfaceMedico_Dudu {
                 break;
             }
             case VisualizarPacientesSemSeConsultarPeriodo: {
-                //Code 03
-
                 System.out.println("Tempo de checagem: A quantos meses seus pacientes nao se consultam?");
                 int meses = input.nextInt();
                 int dias = meses * 30;
 
                 ArrayList<Consulta> consultasPeriodo = consultasDB.getConsultaPassadasMesesAtras(medico.getId(), dias);
-                if (consultasPeriodo.isEmpty()){
-                    System.out.println("Você não possui nenhum pacientes nesse período.");
-                } else {
-                    System.out.printf("Pacientes (%d)\n", consultasPeriodo.size());
-                    for (Consulta consulta: consultasPeriodo){
-                        System.out.print("  > " + pacientesDB.createPacienteFromCPF(consulta.getCpf(), consultasDB.getConsultasByCPF(consulta.getCpf())).getNome());
-                        System.out.print(" | " + consulta.getCpf());
-                        System.out.print(" | " + consulta.getData().format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
-                        System.out.println();
-                    }
+
+                //Validator
+                if(consultasPeriodo.isEmpty()){
+                    System.out.println("Nenhuma consulta encontrada!");
+                    break;
+                }
+
+                System.out.printf("Pacientes (%d)\n", consultasPeriodo.size());
+                for (Consulta consulta: consultasPeriodo){
+                    System.out.print("  > " + pacientesDB.createPacienteFromCPF(consulta.getCpf(), consultasDB.getConsultasByCPF(consulta.getCpf())).getNome());
+                    System.out.print(" | " + consulta.getCpf());
+                    System.out.print(" | " + consulta.getData().format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
+                    System.out.println();
                 }
                 break;
             }
@@ -133,15 +132,3 @@ public class InterfaceMedico_Dudu {
 
     }
 }
-
-
-
-/* ITERADOR DE LINHA-COLUNA
-for (int i = 0; i < tabela.size(); i++) {
-    List<String> linha = tabela.get(i);
-    for (int j = 0; j < linha.size(); j++) {
-        String valor = linha.get(j);
-        System.out.println("Linha " + i + ", Coluna " + j + ": " + valor);
-    }
-}
-*/

@@ -45,16 +45,20 @@ public class InterfacePaciente_Dudu {
         System.out.println("> CPF: " + paciente.getCpf());
         System.out.println("====================");
 
-        System.out.println("""
-                O que você deseja fazer?
-                    [ 1 ] - Visualizar todos os seus médicos (passados e futuros).
-                    [ 2 ] - Visualizar consultas passadas com determinado médico. 
-                    [ 3 ] - Visualizar consultas futuras.""");
+        int choice = 0;
+        do {
+            System.out.println("""
+                    O que você deseja fazer?
+                        [ 1 ] - Visualizar todos os seus médicos (passados e futuros).
+                        [ 2 ] - Visualizar consultas passadas com determinado médico. 
+                        [ 3 ] - Visualizar consultas futuras.""");
 
-        System.out.print("> ");
-        int choice = input.nextInt();
+            System.out.print("> ");
+            choice = input.nextInt();
 
-        InterfacePaciente_Dudu.Options option = InterfacePaciente_Dudu.Options.values()[choice - 1];
+        } while(choice < 1 || choice > 3);
+
+        Options option = Options.values()[choice - 1];
         switch (option) {
             case VisualizarMedicos: {
                 Set<Integer> medicosIDs = new HashSet<>();
@@ -78,10 +82,21 @@ public class InterfacePaciente_Dudu {
                 break;
             }
             case VisualizarConsultasPassadasMedicoDeterminado: {
-                System.out.println("Digite o ID do médico que você deseja visualizar: (10XX)");
-                int id = input.nextInt();
+                int id;
+
+                //Validator
+                do {
+                    System.out.println("Digite o ID do médico que você deseja visualizar: (10XX)");
+                    id = input.nextInt();
+                } while (!consultasDB.isIDValid(id));
 
                 ArrayList<Consulta> consultasPassadas = consultasDB.getConsultasPassadasMedicoDeterminado(cpf, id);
+
+                //Validator
+                if(consultasPassadas.isEmpty()){
+                    System.out.println("Nenhuma consulta encontrada!");
+                    break;
+                }
 
                 System.out.println();
                 System.out.println(String.format("Consultas: (%d)", consultasPassadas.size()));
@@ -96,6 +111,12 @@ public class InterfacePaciente_Dudu {
             case VisualizarConsultasFuturas: {
                 ArrayList<Consulta> consultasFuturas = consultasDB.getConsultasFuturas(consultas);
 
+                //Validator
+                if(consultasFuturas.isEmpty()){
+                    System.out.println("Nenhuma consulta encontrada!");
+                    break;
+                }
+
                 System.out.println(String.format("Consultas: (%d)", consultasFuturas.size()));
                 for (Consulta consulta : consultasFuturas) {
                     System.out.print("  >> Médico: " + medicosDB.getNameFromID(consulta.getId()));
@@ -103,6 +124,7 @@ public class InterfacePaciente_Dudu {
                     System.out.print(" | Horario: " + consulta.getHorario());
                     System.out.println();
                 }
+                break;
             }
         }
     }
