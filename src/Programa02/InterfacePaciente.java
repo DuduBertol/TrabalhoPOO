@@ -1,3 +1,9 @@
+package Programa02;
+
+import Programa02.Databases.ConsultasDB;
+import Programa02.Databases.MedicosDB;
+import Programa02.Databases.PacientesDB;
+
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -23,7 +29,7 @@ public class InterfacePaciente {
         ConsultasDB consultasDB = new ConsultasDB();
         consultasDB.readCSV();
 
-        System.out.println("Olá Paciente.");
+        System.out.println("Olá Programa02.Paciente.");
         String cpf;
 
         //Validator
@@ -35,7 +41,7 @@ public class InterfacePaciente {
         String nome = pacientesDB.getNameFromCpf(cpf);
         ArrayList<Consulta> consultas = consultasDB.getConsultasByCPF(cpf);
 
-        //Cria o Objeto do Paciente dessa sessão
+        //Cria o Objeto do Programa02.Paciente dessa sessão
         Paciente paciente = new Paciente(nome, cpf, consultas);
 
         System.out.printf("Seja Bem Vindo - %s! \n", paciente.getNome());

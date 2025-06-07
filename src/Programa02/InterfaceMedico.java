@@ -1,3 +1,9 @@
+package Programa02;
+
+import Programa02.Databases.ConsultasDB;
+import Programa02.Databases.MedicosDB;
+import Programa02.Databases.PacientesDB;
+
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -75,7 +81,7 @@ public class InterfaceMedico {
                 System.out.printf("\nPacientes (%d) \n", cpfs.size());
 
                 for (String cpf : cpfs) {
-                    System.out.print("  > Paciente: " + pacientesDB.getNameFromCpf(cpf));
+                    System.out.print("  > Programa02.Paciente: " + pacientesDB.getNameFromCpf(cpf));
                     System.out.print(" | CPF: " + cpf + "\n");
 
                     for (Consulta consulta : consultasDB.getConsultasByID(id)) {
@@ -100,7 +106,7 @@ public class InterfaceMedico {
                 for (Consulta consulta: consultasPeriodo){
                     System.out.print("Data: " + consulta.getData().format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
                     System.out.print(" | Horario: " + consulta.getHorario());
-                    System.out.print(" | Paciente: " + pacientesDB.createPacienteFromCPF(consulta.getCpf(), consultasDB.getConsultasByCPF(consulta.getCpf())).getNome());
+                    System.out.print(" | Programa02.Paciente: " + pacientesDB.createPacienteFromCPF(consulta.getCpf(), consultasDB.getConsultasByCPF(consulta.getCpf())).getNome());
                     System.out.println();
                 }
                 break;

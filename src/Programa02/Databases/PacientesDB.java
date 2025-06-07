@@ -1,3 +1,8 @@
+package Programa02.Databases;
+
+import Programa02.Consulta;
+import Programa02.Paciente;
+
 import java.io.File;
 import java.util.*;
 
