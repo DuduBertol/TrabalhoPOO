@@ -94,7 +94,8 @@ public class InterfaceMedico_Old {
                 break;
             }
             case VisualizarConsultasPeriodo: {
-                ArrayList<Consulta> consultasPeriodo = consultasDB.visualizaConsultasPeriodo(medico.getId());
+                ArrayList<Consulta> consultasPeriodo = null; //fake news pra nao dar erro
+//                ArrayList<Consulta> consultasPeriodo = consultasDB.visualizaConsultasPeriodo(medico.getId());
 
                 //Validator
                 if(consultasPeriodo.isEmpty()){

@@ -32,7 +32,6 @@ public class MedicoService {
         medicosDB.readCSV();
         pacientesDB.readCSV();
         consultasDB.readCSV();
-
     }
 
     public Medico getMedico() {
@@ -54,6 +53,10 @@ public class MedicoService {
         System.out.printf("Seja Bem Vindo - %s! \n", medico.getNome());
     }
 
+    public String presetRespostaPesquisaMedico(){
+        return String.format("%s | ID: %d\n\n", medico.getNome(), medico.getId());
+    }
+
     public boolean validarMedico(int id) {
         if(consultasDB.isIDValid(id)){
             setMedico(id);
@@ -69,19 +72,22 @@ public class MedicoService {
 
     public String consultarTodosPacientes() {
         String resultado = "";
+        resultado += presetRespostaPesquisaMedico();
 
-        ArrayList<Paciente> pacientes = medico.getPacientes();
-        Set<Paciente> pacienteSet = new HashSet<>(pacientes);
+        ArrayList<Paciente> pacientes = medico.getPacientes(); // Paciente não pode ser Set<> pois o objeto recebe um ID único
+        Set<String> cpfs = new HashSet<>(); // CPF é sempre igual, então cai na ausência de duplicatas do Set<>
+        for (Paciente paciente : pacientes) {
+            cpfs.add(paciente.getCpf());
+        }
 
-        resultado += String.format("\nPacientes (%d) \n", pacientes.size());
-        resultado += ("\n");
+        resultado += String.format("Pacientes (%d) \n", cpfs.size());
 
-        for (Paciente p : pacienteSet) {
-            resultado += String.format("  > Paciente: " + p.getNome());
-            resultado += String.format(" | CPF: " + p.getCpf() + "\n");
+        for (String cpf : cpfs) {
+            resultado += String.format("  > Paciente: " + pacientesDB.getNameFromCpf(cpf));
+            resultado += String.format(" | CPF: " + cpf + "\n");
 
             for (Consulta consulta : consultasDB.getConsultasByID(medico.getId())) {
-                if (Objects.equals(consulta.getCpf(), p.getCpf())) {
+                if (Objects.equals(consulta.getCpf(), cpf)) {
                     resultado += String.format("    >> Data: %s | Horário: %s \n", consulta.getData().toString(), consulta.getHorario());
                 }
             }
@@ -91,8 +97,23 @@ public class MedicoService {
         return resultado;
     }
 
-    public String consultarPorPeriodo(String mesInicio, String mesFinal) {
+    public String consultarPorPeriodo(String mesInicio, String mesFinal) throws Exception {
+        if (Integer.parseInt(mesInicio) == Integer.parseInt(mesFinal)) {
+            throw new Exception("Meses iguais");
+        }
+        else if (Integer.parseInt(mesInicio) > Integer.parseInt(mesFinal)) {
+            throw new Exception("Mês de início maior que Mês final.");
+        }
+        else if (Integer.parseInt(mesInicio) > 12 || Integer.parseInt(mesFinal) > 12) {
+            throw new Exception("Mês maior que 12.");
+        }
+        else if (Integer.parseInt(mesInicio) < 0 || Integer.parseInt(mesFinal) < 0) {
+            throw new Exception("Mês menor que 0.");
+        }
+
+
         String resultado = "";
+        resultado += presetRespostaPesquisaMedico();
 
         ArrayList<Consulta> consultasPeriodo = consultasDB.visualizaConsultasPeriodo(medico.getId(), mesInicio, mesFinal);
 
@@ -111,8 +132,30 @@ public class MedicoService {
         return resultado;
     }
 
-    public String consultarAusentes(int meses) {
-        // Sua lógica que recebe o número de meses e retorna os pacientes ausentes
-        return "Pacientes ausentes há mais de " + meses + " meses...";
+    public String consultarAusentes(int meses) throws Exception {
+        if (meses < 0) {
+            throw new Exception("Quantidade inválida.");
+        }
+
+
+        String resultado = "";
+        resultado += presetRespostaPesquisaMedico();
+
+        int dias = meses * 30;
+
+        ArrayList<Consulta> consultasPeriodo = consultasDB.getConsultaPassadasMesesAtras(medico.getId(), dias);
+
+        if(consultasPeriodo.isEmpty()){ return ("Nenhuma consulta encontrada!"); }
+
+        resultado += String.format("Pacientes (%d)\n", consultasPeriodo.size());
+        for (Consulta consulta: consultasPeriodo) {
+            resultado += String.format("  > " + pacientesDB.createPacienteFromCPF(consulta.getCpf(), consultasDB.getConsultasByCPF(consulta.getCpf())).getNome());
+            resultado += String.format(" | " + consulta.getCpf());
+            resultado += String.format(" | " + consulta.getData().format(DateTimeFormatter.ofPattern("dd-MM-uuuu")));
+            resultado += String.format("\n");
+        }
+
+        return resultado;
     }
+
 }

@@ -100,7 +100,13 @@ public class InterfaceMedico extends JFrame {
         botaoEntrar.addActionListener(e -> tentarLogin());
 
         // Ação do botão "Executar Consulta"
-        botaoExecutar.addActionListener(e -> executarConsulta());
+        botaoExecutar.addActionListener(e -> {
+            try {
+                executarConsulta();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Por favor, insira um valor válido.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+            }
+        });
 
         // --- 5. CONFIGURAÇÕES FINAIS DA JANELA ---
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,33 +132,29 @@ public class InterfaceMedico extends JFrame {
         }
     }
 
-    private void executarConsulta() {
+    private void executarConsulta() throws Exception {
         String resultado = "";
         if (opcao1.isSelected()) {
             resultado = service.consultarTodosPacientes();
         } else if (opcao2.isSelected()) {
             // Pedir input para o período
-            String dataInicio = JOptionPane.showInputDialog(this, "Digite o mês de início (MM):");
-            String dataFim = JOptionPane.showInputDialog(this, "Digite a data de fim (dd/mm/aaaa):");
-            if(dataInicio != null && dataFim != null) { // Verifica se o usuário não cancelou
-                resultado = service.consultarPorPeriodo(dataInicio, dataFim);
+            String mesInicio = JOptionPane.showInputDialog(this, "Digite o mês de início (MM):");
+            String mesFinal = JOptionPane.showInputDialog(this, "Digite o mês de fim (MM):");
+            if(mesInicio != null && mesFinal != null) { // Verifica se o usuário não cancelou
+                resultado = service.consultarPorPeriodo(mesInicio, mesFinal);
             }
         } else if (opcao3.isSelected()) {
             // Pedir input para os meses
-            try {
-                String mesesStr = JOptionPane.showInputDialog(this, "Digite a quantidade de meses:");
-                if(mesesStr != null){
-                    int meses = Integer.parseInt(mesesStr);
-                    resultado = service.consultarAusentes(meses);
-                }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Por favor, insira um número válido para os meses.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+            String mesesStr = JOptionPane.showInputDialog(this, "Digite a quantidade de meses (MM):");
+            if(mesesStr != null) {
+                int meses = Integer.parseInt(mesesStr);
+                resultado = service.consultarAusentes(meses);
             }
         }
         areaResultados.setText(resultado);
     }
 
-    // Método main para iniciar a aplicação
+    // Metodo main para iniciar a aplicação
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new InterfaceMedico().setVisible(true);

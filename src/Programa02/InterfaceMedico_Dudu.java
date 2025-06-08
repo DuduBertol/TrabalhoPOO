@@ -109,7 +109,7 @@ public class InterfaceMedico_Dudu {
                 break;
             }
             case VisualizarConsultasPeriodo: {
-                ArrayList<Consulta> consultasPeriodo = consultasDB.visualizaConsultasPeriodo(medico.getId());
+                ArrayList<Consulta> consultasPeriodo = null;
 
                 //Validator
                 if(consultasPeriodo.isEmpty()){
