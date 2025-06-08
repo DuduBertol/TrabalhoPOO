@@ -3,8 +3,6 @@ package Programa02;
 import Programa02.Databases.ConsultasDB;
 import Programa02.Databases.MedicosDB;
 import Programa02.Databases.PacientesDB;
-import Programa02.Swing.*;
-
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -26,7 +24,7 @@ public class InterfaceMedico_Dudu {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel painel = new JPanel();
         frame.add(painel);
-        FormSetter.initialScreenConfig(painel);
+//        FormSetter.initialScreenConfig(painel);
         frame.setVisible(true);
 
 
@@ -35,15 +33,15 @@ public class InterfaceMedico_Dudu {
 
         //Medicos Database - Load CSVs
         MedicosDB medicosDB = new MedicosDB();
-        medicosDB.readCSV();
+//        medicosDB.readCSV();
 
         //Pacientes Database - Load CSVs
         PacientesDB pacientesDB = new PacientesDB();
-        pacientesDB.readCSV();
+//        pacientesDB.readCSV();
 
         //Consultas Database - Load CSVs
         ConsultasDB consultasDB = new ConsultasDB();
-        consultasDB.readCSV();
+//        consultasDB.readCSV();
 
         System.out.println("Olá Médico.");
         int id;

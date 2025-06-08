@@ -2,7 +2,6 @@ package Programa02;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 
 // View da Interface do Médico
@@ -23,11 +22,11 @@ public class InterfaceMedico extends JFrame {
     private JTextArea areaResultados;
 
 
-    //O PROGRAMA >> classe que chamarei na MAIN
+    //O PROGRAMA >> o inicializador da classe que chamarei na MAIN
     public InterfaceMedico() {
-        super("Sistema de Médico"); // Title (tipo de uma pág html)
+        super("Sistema Médico"); // Title de JFrame (tipo title de uma pág html)
 
-        service.csvReader();
+        service.fileReader();
 
         // --- 1. PAINEL DE LOGIN ---
 

@@ -19,15 +19,15 @@ public class InterfacePaciente {
 
         //Medicos Database - Load CSVs
         MedicosDB medicosDB = new MedicosDB();
-        medicosDB.readCSV();
+        medicosDB.readFile();
 
         //Pacientes Database - Load CSVs
         PacientesDB pacientesDB = new PacientesDB();
-        pacientesDB.readCSV();
+        pacientesDB.readFile();
 
         //Consultas Database - Load CSVs
         ConsultasDB consultasDB = new ConsultasDB();
-        consultasDB.readCSV();
+        consultasDB.readFile();
 
         System.out.println("Olá Programa02.Paciente.");
         String cpf;

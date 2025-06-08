@@ -1,8 +1,9 @@
 package Programa02.Databases;
 
+import Programa01.CSVFile;
 import Programa02.Consulta;
 
-import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -27,7 +28,7 @@ public class ConsultasDB {
         LocalDate hoje = LocalDate.now();
 
         for (Consulta consulta : consultasMedico) {
-            if(hoje.getDayOfYear() - consulta.getData().getDayOfYear() >= dias) {
+            if (hoje.getDayOfYear() - consulta.getData().getDayOfYear() >= dias) {
                 consultasPassadas.add(consulta);
             }
         }
@@ -37,14 +38,14 @@ public class ConsultasDB {
 
     public ArrayList<Consulta> visualizaConsultasPeriodo(int id, String mesInicio, String mesFinal) {
 
-        LocalDate dataInicio = LocalDate.parse(String.format("01-%s-2025",mesInicio), this.formatoBR);
-        LocalDate dataFinal = LocalDate.parse(String.format("01-%s-2025",mesFinal), this.formatoBR);
+        LocalDate dataInicio = LocalDate.parse(String.format("01-%s-2025", mesInicio), this.formatoBR);
+        LocalDate dataFinal = LocalDate.parse(String.format("01-%s-2025", mesFinal), this.formatoBR);
 
         ArrayList<Consulta> consultasPeriodo = new ArrayList<>();
 
         ArrayList<Consulta> consultasMedico = getConsultasByID(id);
         for (Consulta consulta : consultasMedico) {
-            if(consulta.getData().isAfter(dataInicio) && consulta.getData().isBefore(dataFinal)){
+            if (consulta.getData().isAfter(dataInicio) && consulta.getData().isBefore(dataFinal)) {
                 consultasPeriodo.add(consulta);
             }
         }
@@ -70,7 +71,7 @@ public class ConsultasDB {
 
         ArrayList<Consulta> consultasPaciente = getConsultasByCPF(cpf);
         for (Consulta consulta : consultasPaciente) {
-            if(consulta.getData().isBefore(dataHoje) && consulta.getId() == id){
+            if (consulta.getData().isBefore(dataHoje) && consulta.getId() == id) {
                 consultasPassadas.add(consulta);
             }
         }
@@ -87,7 +88,7 @@ public class ConsultasDB {
         return consultas;
     }
 
-    public ArrayList<LocalDate> getListOfLocalDatasFromConsultas(){
+    public ArrayList<LocalDate> getListOfLocalDatasFromConsultas() {
         ArrayList<LocalDate> listDatas = new ArrayList<>();
 
         for (List<String> linha : this.consultasTable) {
@@ -99,7 +100,7 @@ public class ConsultasDB {
         return listDatas;
     }
 
-    public ArrayList<Consulta> getConsultasByIDAndCpf(int id, String cpf){
+    public ArrayList<Consulta> getConsultasByIDAndCpf(int id, String cpf) {
 
         ArrayList<Consulta> consultas = new ArrayList<>();
 
@@ -118,7 +119,7 @@ public class ConsultasDB {
         return consultas;
     }
 
-    public ArrayList<Consulta> getConsultasByID(int id){
+    public ArrayList<Consulta> getConsultasByID(int id) {
 
         ArrayList<Consulta> consultas = new ArrayList<>();
 
@@ -137,7 +138,7 @@ public class ConsultasDB {
         return consultas;
     }
 
-    public ArrayList<Integer> getIDsByCpf(String cpf){
+    public ArrayList<Integer> getIDsByCpf(String cpf) {
 
         ArrayList<Integer> ids = new ArrayList<>();
 
@@ -152,7 +153,7 @@ public class ConsultasDB {
         return ids;
     }
 
-    public ArrayList<Consulta> getConsultasByCPF(String cpf){
+    public ArrayList<Consulta> getConsultasByCPF(String cpf) {
 
         ArrayList<Consulta> consultas = new ArrayList<>();
 
@@ -171,14 +172,14 @@ public class ConsultasDB {
         return consultas;
     }
 
-    public ArrayList<String> getCPFsFromID(int id){
+    public ArrayList<String> getCPFsFromID(int id) {
         ArrayList<String> cpfs = new ArrayList<>();
 
-        for(int i = 0; i < this.consultasTable.size(); i++) {
+        for (int i = 0; i < this.consultasTable.size(); i++) {
             List<String> linha = this.consultasTable.get(i);
 
             int actualID = Integer.parseInt(linha.get(2));
-            if(actualID == id) {
+            if (actualID == id) {
                 cpfs.add(linha.get(3));
             }
         }
@@ -186,7 +187,7 @@ public class ConsultasDB {
         return cpfs;
     }
 
-    public boolean isCpfValid(String cpf){
+    public boolean isCpfValid(String cpf) {
         for (List<String> linha : this.consultasTable) {
             String actualCpf = linha.get(3);
             if (Objects.equals(actualCpf, cpf)) {
@@ -196,7 +197,7 @@ public class ConsultasDB {
         return false;
     }
 
-    public boolean isIDValid(int id){
+    public boolean isIDValid(int id) {
         for (List<String> linha : this.consultasTable) {
             int actualID = Integer.parseInt(linha.get(2));
             if (actualID == id) {
@@ -206,37 +207,18 @@ public class ConsultasDB {
         return false;
     }
 
-    public void readCSV(){
-        String SEPARADOR = ",";
+    public void readFile() { //aqui daria pra tentar usar throws
+        try {
+            CSVFile file = CSVFile.abrir("Consultas.ser");
+            System.out.println("[[Consultas.ser]] recuperado com sucesso!");
+            this.consultasTable = file.getTabela();
 
-        ArrayList<ArrayList<String>> tabela = new ArrayList<>();
-        try
-        {
-            String pathToCSV = "CSVs/Consultas.csv";
-            File arquivo = new File(pathToCSV);
-            Scanner scanner_arquivo = new Scanner(arquivo);
-
-            String cabecalho = scanner_arquivo.nextLine();
-            //System.out.println(cabecalho);
-
-            while (scanner_arquivo.hasNextLine())
-            {
-                String linha = scanner_arquivo.nextLine();
-                Scanner scanner_linha = new Scanner(linha);
-                scanner_linha.useDelimiter(SEPARADOR);
-                ArrayList<String> registro = new ArrayList<>();
-                while (scanner_linha.hasNext())
-                {
-                    String campo = scanner_linha.next();
-                    registro.add(campo);
-                }
-                tabela.add(registro);
-            }
-        }
-        catch(Exception e)
-        {
+        } catch (IOException e) {
+            System.out.println("Excecao de I/O");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Excecao de classe desconhecida");
             e.printStackTrace();
         }
-        this.consultasTable = tabela;
     }
 }

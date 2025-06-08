@@ -1,22 +1,24 @@
 package Programa02.Databases;
 
+import Programa01.CSVFile;
 import Programa02.Consulta;
 import Programa02.Paciente;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class PacientesDB {
     private ArrayList<ArrayList<String>> pacientesTable;
 
-    public Paciente createPacienteFromCPF(String cpf, ArrayList<Consulta> consultas){
+    public Paciente createPacienteFromCPF(String cpf, ArrayList<Consulta> consultas) {
         Paciente paciente = null;
 
-        for(int i = 0; i < this.pacientesTable.size(); i++) {
+        for (int i = 0; i < this.pacientesTable.size(); i++) {
             List<String> linha = this.pacientesTable.get(i);
 
             String actualCPF = linha.get(1);
-            if(Objects.equals(actualCPF, cpf)) {
+            if (Objects.equals(actualCPF, cpf)) {
                 paciente = new Paciente(linha.get(0), cpf, consultas);
             }
         }
@@ -24,14 +26,14 @@ public class PacientesDB {
         return paciente;
     }
 
-    public String getNameFromCpf(String cpf){
+    public String getNameFromCpf(String cpf) {
         String nome = null;
 
-        for(int i = 0; i < this.pacientesTable.size(); i++) {
+        for (int i = 0; i < this.pacientesTable.size(); i++) {
             List<String> linha = this.pacientesTable.get(i);
 
             String actualCPF = linha.get(1);
-            if(Objects.equals(actualCPF, cpf)) {
+            if (Objects.equals(actualCPF, cpf)) {
                 nome = linha.get(0);
             }
         }
@@ -40,39 +42,19 @@ public class PacientesDB {
     }
 
 
+    public void readFile() { //aqui daria pra tentar usar throws
+        try {
+            CSVFile file = CSVFile.abrir("Pacientes.ser");
+            System.out.println("[[Pacientes.ser]] recuperado com sucesso!");
+            this.pacientesTable = file.getTabela();
 
-    public void readCSV(){
-        String SEPARADOR = ",";
-
-        ArrayList<ArrayList<String>> tabela = new ArrayList<>();
-        try
-        {
-            String pathToCSV = "CSVs/Pacientes.csv";
-            File arquivo = new File(pathToCSV);
-            Scanner scanner_arquivo = new Scanner(arquivo);
-
-            String cabecalho = scanner_arquivo.nextLine();
-            //System.out.println(cabecalho);
-
-            while (scanner_arquivo.hasNextLine())
-            {
-                String linha = scanner_arquivo.nextLine();
-                Scanner scanner_linha = new Scanner(linha);
-                scanner_linha.useDelimiter(SEPARADOR);
-                ArrayList<String> registro = new ArrayList<>();
-                while (scanner_linha.hasNext())
-                {
-                    String campo = scanner_linha.next();
-                    registro.add(campo);
-                }
-                tabela.add(registro);
-            }
-        }
-        catch(Exception e)
-        {
+        } catch (IOException e) {
+            System.out.println("Excecao de I/O");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Excecao de classe desconhecida");
             e.printStackTrace();
         }
-        this.pacientesTable = tabela;
     }
 
 }

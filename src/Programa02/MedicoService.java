@@ -25,13 +25,13 @@ public class MedicoService {
     ConsultasDB consultasDB = new ConsultasDB();
 
     // CSVs READER
-    public void csvReader(){
+    public void fileReader(){
 
         //aqui faço a persistencia de objetos/dados
 
-        medicosDB.readCSV();
-        pacientesDB.readCSV();
-        consultasDB.readCSV();
+        medicosDB.readFile();
+        pacientesDB.readFile();
+        consultasDB.readFile();
     }
 
     public Medico getMedico() {
