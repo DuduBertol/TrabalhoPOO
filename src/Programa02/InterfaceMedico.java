@@ -2,6 +2,7 @@ package Programa02;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 
 // View da Interface do Médico
@@ -24,15 +25,13 @@ public class InterfaceMedico extends JFrame {
 
     //O PROGRAMA >> classe que chamarei na MAIN
     public InterfaceMedico() {
-        super("Sistema de Médico"); // Title (tipo do html)
+        super("Sistema de Médico"); // Title (tipo de uma pág html)
 
         service.csvReader();
 
         // --- 1. PAINEL DE LOGIN ---
 
         //Setup painel para o campo de login
-
-        //Setup painel para o campo de Input
         JPanel painelLogin = new JPanel(new GridBagLayout()); // Layout flexível
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5); // Spacing
@@ -46,10 +45,14 @@ public class InterfaceMedico extends JFrame {
         JButton botaoEntrar = new JButton("Entrar"); // Botão
         painelLogin.add(botaoEntrar, gbc); // Add
 
+        //Esse painel é setado no campo principal >> Config do Card Layout
+
 
         // --- 2. PAINEL PRINCIPAL ---
         JPanel painelMenu = new JPanel(new BorderLayout(10, 10));
         painelMenu.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+
 
         // Painel para as opções (RadioButtons)
         JPanel painelOpcoes = new JPanel();
@@ -110,6 +113,7 @@ public class InterfaceMedico extends JFrame {
             int id = Integer.parseInt(campoIdMedico.getText());
             if (service.validarMedico(id)) {
                 // Se o login for válido, muda para o painel do menu
+                JOptionPane.showMessageDialog(this, "Bem vindo(a)! " + service.getMedico().getNome()); // Inserir aqui nome do médico da sessão (criar sessão)
                 cardLayout.show(painelPrincipal, "MENU");
                 // Ajusta o tamanho da janela para o novo painel
                 this.setSize(600, 400);
@@ -128,7 +132,7 @@ public class InterfaceMedico extends JFrame {
             resultado = service.consultarTodosPacientes();
         } else if (opcao2.isSelected()) {
             // Pedir input para o período
-            String dataInicio = JOptionPane.showInputDialog(this, "Digite a data de início (dd/mm/aaaa):");
+            String dataInicio = JOptionPane.showInputDialog(this, "Digite o mês de início (MM):");
             String dataFim = JOptionPane.showInputDialog(this, "Digite a data de fim (dd/mm/aaaa):");
             if(dataInicio != null && dataFim != null) { // Verifica se o usuário não cancelou
                 resultado = service.consultarPorPeriodo(dataInicio, dataFim);

@@ -35,13 +35,9 @@ public class ConsultasDB {
         return consultasPassadas;
     }
 
-    public ArrayList<Consulta> visualizaConsultasPeriodo(int id) {
-        System.out.println("Digite o mês de início do período que você deseja visualizar: (MM)");
-        String mesInicio = input.nextLine();
-        LocalDate dataInicio = LocalDate.parse(String.format("01-%s-2025",mesInicio), this.formatoBR);
+    public ArrayList<Consulta> visualizaConsultasPeriodo(int id, String mesInicio, String mesFinal) {
 
-        System.out.println("Digite o mês de fim do período que você deseja visualizar: (MM)");
-        String mesFinal = input.nextLine();
+        LocalDate dataInicio = LocalDate.parse(String.format("01-%s-2025",mesInicio), this.formatoBR);
         LocalDate dataFinal = LocalDate.parse(String.format("01-%s-2025",mesFinal), this.formatoBR);
 
         ArrayList<Consulta> consultasPeriodo = new ArrayList<>();

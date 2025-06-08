@@ -21,6 +21,8 @@ public class Medico{
         return id;
     }
 
+    public ArrayList<Paciente> getPacientes(){ return pacientes; }
+
 }
 
 //1. Cada médico possui os seguintes dados:
