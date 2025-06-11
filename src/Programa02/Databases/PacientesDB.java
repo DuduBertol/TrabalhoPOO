@@ -49,7 +49,7 @@ public class PacientesDB {
             this.pacientesTable = file.getTabela();
 
         } catch (IOException e) {
-            System.out.println("Excecao de I/O");
+            System.out.println("Excecao de I/O - Pacientes.ser");
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             System.out.println("Excecao de classe desconhecida");

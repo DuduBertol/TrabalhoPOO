@@ -214,7 +214,7 @@ public class ConsultasDB {
             this.consultasTable = file.getTabela();
 
         } catch (IOException e) {
-            System.out.println("Excecao de I/O");
+            System.out.println("Excecao de I/O - Consultas.ser");
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             System.out.println("Excecao de classe desconhecida");
