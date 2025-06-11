@@ -141,7 +141,8 @@ public class InterfacePaciente extends JFrame {
                 this.setSize(600, 400);
                 this.setLocationRelativeTo(null);
             } else {
-                JOptionPane.showMessageDialog(this, "ID de médico inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "CPF Inválido inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                //isso teoricamente nem é mostrado pq um catch de CPFInvalidoException pega antes.
             }
         }
         catch (CPFInvalidoException ex) {
