@@ -54,6 +54,7 @@ public class CSVFile implements Serializable{
     }
 
 
+    // Uso de throws - 01
     public void salvar(String nome_arquivo) throws IOException {
         FileOutputStream arquivo = new FileOutputStream(nome_arquivo);
         ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
@@ -62,6 +63,7 @@ public class CSVFile implements Serializable{
         arquivo.close();
     }
 
+    // Uso de throws - 02
     public static CSVFile abrir(String nome_arquivo) throws IOException, ClassNotFoundException {
         CSVFile file = null;
         FileInputStream arquivo = new FileInputStream(nome_arquivo);

@@ -1,8 +1,15 @@
 package Programa02;
 
+import Programa02.Exception.IdInvalidoException;
+import Programa02.Exception.PeriodoInvalidoException;
+
 import javax.swing.*;
 import java.awt.*;
-
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 // View da Interface do Médico
 public class InterfaceMedico extends JFrame {
@@ -20,6 +27,7 @@ public class InterfaceMedico extends JFrame {
     // Componentes do painel principal
     private JRadioButton opcao1, opcao2, opcao3;
     private JTextArea areaResultados;
+    private JButton botaoExportar;
 
 
     //O PROGRAMA >> o inicializador da classe que chamarei na MAIN
@@ -85,6 +93,12 @@ public class InterfaceMedico extends JFrame {
         JScrollPane scrollPane = new JScrollPane(areaResultados); // Scroll Bar (caso necessite)
         painelMenu.add(scrollPane, BorderLayout.CENTER);
 
+        // --- PAINEL DE EXPORTAÇÃO (NOVO) ---
+        JPanel painelSul = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // Alinhado à direita
+        botaoExportar = new JButton("Exportar para .txt");
+        botaoExportar.setEnabled(false); // Começa desabilitado
+        painelSul.add(botaoExportar);
+        painelMenu.add(painelSul, BorderLayout.SOUTH);
 
         // --- 3. CONFIGURAR CARDLAYOUT ---
         painelPrincipal.add(painelLogin, "LOGIN");
@@ -102,10 +116,17 @@ public class InterfaceMedico extends JFrame {
         botaoExecutar.addActionListener(e -> {
             try {
                 executarConsulta();
-            } catch (Exception ex) {
+            }
+            catch (PeriodoInvalidoException ex) {
+                JOptionPane.showMessageDialog(this, "Por favor, insira datas de consulta válidas.", "Erro de Período", JOptionPane.ERROR_MESSAGE);
+            }
+            catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Por favor, insira um valor válido.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
             }
         });
+
+        // Ação do botão "Exportar"
+        botaoExportar.addActionListener(e -> exportarResultado());
 
         // --- 5. CONFIGURAÇÕES FINAIS DA JANELA ---
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -129,6 +150,9 @@ public class InterfaceMedico extends JFrame {
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, insira um ID numérico.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
         }
+        catch (IdInvalidoException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro de Validação.", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void executarConsulta() throws Exception {
@@ -151,6 +175,12 @@ public class InterfaceMedico extends JFrame {
             }
         }
         areaResultados.setText(resultado);
+
+        botaoExportar.setEnabled(!resultado.isEmpty() && !resultado.startsWith("Os resultados"));
+    }
+
+    private void exportarResultado() {
+        service.exportarResultado(areaResultados.getText());
     }
 
     // Metodo main para iniciar a aplicação

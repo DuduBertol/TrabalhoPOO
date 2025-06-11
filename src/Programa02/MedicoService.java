@@ -1,12 +1,16 @@
 package Programa02;
 
 import Programa02.Databases.*;
+import Programa02.Exception.IdInvalidoException;
+import Programa02.Exception.PeriodoInvalidoException;
 
+import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 
 //Faz o meio campo entre a database antiga e a view
@@ -24,11 +28,8 @@ public class MedicoService {
     //Consultas Database
     ConsultasDB consultasDB = new ConsultasDB();
 
-    // CSVs READER
+    // CSVs FILE READER - Pesistência de Dados
     public void fileReader(){
-
-        //aqui faço a persistencia de objetos/dados
-
         medicosDB.readFile();
         pacientesDB.readFile();
         consultasDB.readFile();
@@ -57,13 +58,13 @@ public class MedicoService {
         return String.format("%s | ID: %d\n\n", medico.getNome(), medico.getId());
     }
 
-    public boolean validarMedico(int id) {
+    public boolean validarMedico(int id) throws IdInvalidoException {
         if(consultasDB.isIDValid(id)){
             setMedico(id);
             return true;
         }
         else{
-            return false;
+            throw new IdInvalidoException("O ID do médico deve estar entre 1000 e 1050.");
         }
     }
 
@@ -97,18 +98,18 @@ public class MedicoService {
         return resultado;
     }
 
-    public String consultarPorPeriodo(String mesInicio, String mesFinal) throws Exception {
+    public String consultarPorPeriodo(String mesInicio, String mesFinal) throws PeriodoInvalidoException {
         if (Integer.parseInt(mesInicio) == Integer.parseInt(mesFinal)) {
-            throw new Exception("Meses iguais");
+            throw new PeriodoInvalidoException("Meses iguais");
         }
         else if (Integer.parseInt(mesInicio) > Integer.parseInt(mesFinal)) {
-            throw new Exception("Mês de início maior que Mês final.");
+            throw new PeriodoInvalidoException("Mês de início maior que Mês final.");
         }
         else if (Integer.parseInt(mesInicio) > 12 || Integer.parseInt(mesFinal) > 12) {
-            throw new Exception("Mês maior que 12.");
+            throw new PeriodoInvalidoException("Mês maior que 12.");
         }
         else if (Integer.parseInt(mesInicio) < 0 || Integer.parseInt(mesFinal) < 0) {
-            throw new Exception("Mês menor que 0.");
+            throw new PeriodoInvalidoException("Mês menor que 0.");
         }
 
 
@@ -156,6 +157,46 @@ public class MedicoService {
         }
 
         return resultado;
+    }
+
+    // Exportar pesquisa
+    public void exportarResultado(String resultado){
+        String textoParaExportar = resultado;
+
+        // Seletor de Arquivos
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Salvar Resultados");
+
+        // Nome default
+        String nomeArquivoSugerido = "resultados-" + new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date()) + ".txt";
+        fileChooser.setSelectedFile(new File(nomeArquivoSugerido));
+
+        int selecao = fileChooser.showSaveDialog(null);
+
+        // Se o usuário confirmar a seleção
+        if (selecao == JFileChooser.APPROVE_OPTION) {
+            File arquivoParaSalvar = fileChooser.getSelectedFile();
+
+            // Arquivo com extensão .txt
+            if (!arquivoParaSalvar.getName().toLowerCase().endsWith(".txt")) {
+                arquivoParaSalvar = new File(arquivoParaSalvar.getParentFile(), arquivoParaSalvar.getName() + ".txt");
+            }
+
+            // 3. Tenta escrever o arquivo (com tratamento de exceções)
+            // Usando try-with-resources para garantir que o FileWriter seja fechado automaticamente
+            try (FileWriter writer = new FileWriter(arquivoParaSalvar)) {
+                writer.write(textoParaExportar);
+                JOptionPane.showMessageDialog(null,
+                        "Arquivo salvo com sucesso em:\n" + arquivoParaSalvar.getAbsolutePath(),
+                        "Exportação Concluída",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null,
+                        "Erro ao salvar o arquivo: " + ex.getMessage(),
+                        "Erro de I/O",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
 }
